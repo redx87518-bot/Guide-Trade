@@ -57,7 +57,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
 
-    implementation("io.appwrite:appwrite:4.1.0")
+    implementation("io.appwrite:sdk-for-android:27.1.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
