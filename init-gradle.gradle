@@ -3,7 +3,6 @@ allprojects {
         resolutionStrategy {
             cacheDynamicVersionsFor 0, 'seconds'
             cacheChangingModulesFor 0, 'seconds'
-            cacheSnapshotsFor 0, 'seconds'
         }
     }
 }
