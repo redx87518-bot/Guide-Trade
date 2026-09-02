@@ -146,7 +146,7 @@ fun ThinkingOrb() {
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(500, delay = 200, easing = LinearEasing),
+            animation = tween(500, delayMillis = 200, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
         label = "dot2"
@@ -155,7 +155,7 @@ fun ThinkingOrb() {
         initialValue = 0f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(500, delay = 400, easing = LinearEasing),
+            animation = tween(500, delayMillis = 400, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
         label = "dot3"
