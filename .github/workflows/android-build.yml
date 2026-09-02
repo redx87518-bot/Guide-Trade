@@ -33,38 +33,45 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 8.11.1
+          cache-disabled: true
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
           api-level: 36
-          ndk: 26.3.10984163
-          ndk-level: 26.3.10984163
           build-tools: 36.0.0
-          emu-cli: true
-          ndk-parallel-upstream: false
-
-      - name: Configure Gradle
-        run: |
-          echo "org.gradle.jvmargs=-Xmx4096m -Dfile.encoding=UTF-8" >> $GITHUB_ENV
-          echo "org.gradle.caching=true" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Build release APK
-        run: ./gradlew assembleRelease --no-daemon -x lint -x test -x lintVitalRelease
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon -x lint -x test
+        run: gradle :app:assembleDebug --no-daemon -x lint -x test
 
       - name: Extract debug APK
-        run: find app/build/outputs/apk/debug -name "*.apk" -exec cp {} ${{ env.OUTPUT_DIR }}/GuideTrade-debug.apk \;
-        env:
-          OUTPUT_DIR: ${{ github.workspace }}/artifacts
+        run: |
+          mkdir -p ${{ github.workspace }}/artifacts
+          find app/build/outputs/apk/debug -name "*.apk" | head -1 | xargs -I {} cp {} ${{ github.workspace }}/artifacts/GuideTrade-debug.apk
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: GuideTrade-debug
-          path: ${{ env.OUTPUT_DIR }}/GuideTrade-debug.apk
+          path: ${{ github.workspace }}/artifacts/GuideTrade-debug.apk
           if-no-files-found: error
+
+      - name: Build release APK
+        run: gradle :app:assembleRelease --no-daemon -x lint -x test -x lintVitalRelease
+
+      - name: Extract release APK
+        run: |
+          mkdir -p ${{ github.workspace }}/artifacts
+          find app/build/outputs/apk/release -name "*unsigned*.apk" | head -1 | xargs -I {} cp {} ${{ github.workspace }}/artifacts/GuideTrade-release-unsigned.apk || true
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GuideTrade-release-unsigned
+          path: ${{ github.workspace }}/artifacts/GuideTrade-release-unsigned.apk
+          if-no-files-found: ignore
