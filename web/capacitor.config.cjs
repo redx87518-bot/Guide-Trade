@@ -1,6 +1,6 @@
-import { defineConfig } from '@capacitor/cli';
+const { defineConfig } = require('@capacitor/cli');
 
-export default defineConfig({
+module.exports = defineConfig({
   appId: 'com.guidetrade.app',
   appName: 'Guide Trade',
   webDir: 'dist',

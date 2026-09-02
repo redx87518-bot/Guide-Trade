@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useAuth, signOut } from '@/lib/appwrite';
+import { useAuth } from '@/hooks/useAuth';
 import { databases, databaseId, COLLECTIONS, callFunction } from '@/lib/appwrite';
 
 export default function SettingsPage() {
