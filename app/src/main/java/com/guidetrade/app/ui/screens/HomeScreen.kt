@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -55,9 +56,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.guidetrade.app.R
-import com.guidetrade.app.ui.OrbState
 import com.guidetrade.app.ui.theme.GradientEnd
 import com.guidetrade.app.ui.theme.GradientStart
+import com.guidetrade.app.ui.theme.OrbState
 
 @Composable
 fun AuthScreen(
@@ -238,7 +239,7 @@ fun HomeScreen(
 
         Box(
             modifier = Modifier
-                .size(160f, 160f)
+                .size(160.dp, 160.dp)
         ) {
             AnimatedOrb(state = orbState)
         }

@@ -8,6 +8,7 @@ import com.guidetrade.app.data.models.ResearchStatus
 import com.guidetrade.app.data.models.UserSettings
 import com.guidetrade.app.data.models.Watchlist
 import io.appwrite.exceptions.AppwriteException
+import io.appwrite.models.User
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
@@ -16,7 +17,7 @@ class CreateUserUseCase(private val authRepository: AuthRepository) {
         email: String,
         password: String,
         name: String
-    ): Result<Unit> = authRepository.createUser(email, password, name)
+    ): Result<User<Map<String, Any>>> = authRepository.createUser(email, password, name)
 }
 
 class SignInUseCase(private val authRepository: AuthRepository) {

@@ -13,12 +13,9 @@ import com.guidetrade.app.data.models.Watchlist
 import com.guidetrade.app.data.models.Notification
 import com.guidetrade.app.data.models.NotificationType
 import io.appwrite.exceptions.AppwriteException
-import io.appwrite.models.Document
 import io.appwrite.models.DocumentList
-import io.appwrite.models.Preferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import java.util.Date
 
 class ResearchRepository(private val appwrite: AppwriteManager) {
@@ -146,9 +143,9 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
                     researchId = doc.data["researchId"] as? String ?: "",
                     title = doc.data["title"] as? String ?: "",
                     fileId = doc.data["fileId"] as? String ?: "",
-                    createdAt = Date((doc.data["$createdAt"] as? Long) ?: System.currentTimeMillis())
-                )
-            }.sortedByDescending { it.createdAt }
+                    createdAt = Date((doc.data["\$createdAt"] as? Long) ?: System.currentTimeMillis())
+                 )
+             }.sortedByDescending { it.createdAt }
         } catch (e: AppwriteException) {
             Log.e("ResearchRepo", "Failed to fetch reports: ${e.message}")
         }
@@ -170,10 +167,10 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
                     ),
                     title = doc.data["title"] as? String ?: "",
                     message = doc.data["message"] as? String ?: "",
-                    read = doc.data["read"] as? Boolean ?: false,
-                    createdAt = Date((doc.data["$createdAt"] as? Long) ?: System.currentTimeMillis())
-                )
-            }.sortedByDescending { it.createdAt }
+                     read = doc.data["read"] as? Boolean ?: false,
+                     createdAt = Date((doc.data["\$createdAt"] as? Long) ?: System.currentTimeMillis())
+                     )
+             }.sortedByDescending { it.createdAt }
         } catch (e: AppwriteException) {
             Log.e("ResearchRepo", "Failed to fetch notifications: ${e.message}")
         }

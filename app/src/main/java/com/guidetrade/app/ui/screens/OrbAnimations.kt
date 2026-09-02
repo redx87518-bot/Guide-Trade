@@ -26,7 +26,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import com.guidetrade.app.ui.OrbState
+import androidx.compose.ui.unit.dp
+import com.guidetrade.app.ui.theme.OrbState
 import com.guidetrade.app.ui.theme.GradientEnd
 import com.guidetrade.app.ui.theme.GradientStart
 
@@ -51,7 +52,7 @@ fun IdleOrb() {
 
     Box(
         modifier = Modifier
-            .size(160f * pulseScale)
+            .size(160.dp * pulseScale)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -63,7 +64,7 @@ fun IdleOrb() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.size(60f)) {
+        Canvas(modifier = Modifier.size(60.dp)) {
             drawCircle(
                 color = Color.White.copy(alpha = 0.5f),
                 radius = 20f
@@ -102,7 +103,7 @@ fun ListeningOrb() {
 
     Box(
         modifier = Modifier
-            .size(160f)
+            .size(160.dp)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -114,7 +115,7 @@ fun ListeningOrb() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.size(160f)) {
+        Canvas(modifier = Modifier.size(160.dp)) {
             drawCircle(
                 color = Color.White.copy(alpha = 0.6f),
                 radius = waveRadius,
@@ -162,7 +163,7 @@ fun ThinkingOrb() {
 
     Box(
         modifier = Modifier
-            .size(160f)
+            .size(160.dp)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -174,7 +175,7 @@ fun ThinkingOrb() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        androidx.compose.foundation.layout.Row(
+        Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -200,7 +201,7 @@ fun SpeakingOrb() {
 
     Box(
         modifier = Modifier
-            .size(160f)
+            .size(160.dp)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -212,17 +213,17 @@ fun SpeakingOrb() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.size(120f)) {
-            val centerX = size / 2
-            val barWidth = size / 12
+        Canvas(modifier = Modifier.size(120.dp)) {
+            val centerX = size.width / 2
+            val barWidth = size.width / 12
             for (i in 0..10) {
-                val x = centerX - (size / 2 - barWidth) + (i * barWidth * 1.2f)
+                val x = centerX - (size.width / 2 - barWidth) + (i * barWidth * 1.2f)
                 val barHeight = waveHeight * (if (i % 2 == 0) 1f else 0.6f)
                 drawRoundRect(
                     color = Color.White.copy(alpha = 0.6f),
                     topLeft = Offset(x, centerX - barHeight),
-                    size = androidx.compose.ui.geometry.Size(barWidth, barHeight * 2),
-                    cornerRadius = androidx.compose.ui.geometry.CornerRadius(4f)
+                    size = Size(barWidth, barHeight * 2),
+                    cornerRadius = CornerRadius(4f)
                 )
             }
         }
@@ -233,7 +234,7 @@ fun SpeakingOrb() {
 fun ErrorOrb() {
     Box(
         modifier = Modifier
-            .size(160f)
+            .size(160.dp)
             .clip(CircleShape)
             .background(
                 brush = Brush.radialGradient(
@@ -245,18 +246,18 @@ fun ErrorOrb() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.size(60f)) {
+        Canvas(modifier = Modifier.size(60.dp)) {
             drawLine(
                 color = Color.White,
-                start = Offset(size / 4, size / 4),
-                end = Offset(size * 3 / 4, size * 3 / 4),
+                start = Offset(size.width / 4, size.height / 4),
+                end = Offset(size.width * 3 / 4, size.height * 3 / 4),
                 strokeWidth = 4f,
                 cap = StrokeCap.Round
             )
             drawLine(
                 color = Color.White,
-                start = Offset(size * 3 / 4, size / 4),
-                end = Offset(size / 4, size * 3 / 4),
+                start = Offset(size.width * 3 / 4, size.height / 4),
+                end = Offset(size.width / 4, size.height * 3 / 4),
                 strokeWidth = 4f,
                 cap = StrokeCap.Round
             )
@@ -268,7 +269,7 @@ fun ErrorOrb() {
 fun AnimatedDot(alpha: Float) {
     Box(
         modifier = Modifier
-            .size(8f)
+            .size(8.dp)
             .background(
                 color = Color.White.copy(alpha = alpha),
                 shape = CircleShape

@@ -27,7 +27,7 @@ class AuthRepository(private val appwrite: AppwriteManager) {
 
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {
-            appwrite.account.createEmailSession(
+            appwrite.account.createSession(
                 email = email,
                 password = password
             )
@@ -50,18 +50,17 @@ class AuthRepository(private val appwrite: AppwriteManager) {
         return try {
             val user = appwrite.account.get()
             val prefs = try {
-                appwrite.account.getPrefs<Map<String, Any>>()
+                appwrite.account.getPrefs()
             } catch (e: Exception) {
                 null
             }
-            val profile = prefs?.let {
-                Profile(
-                    userId = user.id,
-                    name = user.name ?: "",
-                    email = user.email ?: "",
-                    avatarUrl = prefs["avatarUrl"] as? String ?: ""
-                )
-            }
+            val avatarUrl = prefs?.data?.get("avatarUrl") as? String
+            val profile = Profile(
+                userId = user.id,
+                name = user.name ?: "",
+                email = user.email ?: "",
+                avatarUrl = avatarUrl ?: ""
+            )
             Result.success(profile)
         } catch (e: AppwriteException) {
             Result.failure(e)

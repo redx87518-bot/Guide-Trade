@@ -8,7 +8,6 @@ import io.appwrite.services.Storage
 import io.appwrite.services.Functions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 
 object AppwriteConfig {
     const val ENDPOINT = "https://nyc.cloud.appwrite.io/v1"
@@ -24,26 +23,22 @@ class AppwriteManager private constructor(context: Context) {
     )
 
     val account: Account = Account(client)
-    val databases: Databases = Databases(client, AppwriteConfig.DATABASE_ID)
+    val databases: Databases = Databases(client)
     val storage: Storage = Storage(client)
     val functions: Functions = Functions(client)
 
     private val _authState = MutableStateFlow(false)
     val authState: StateFlow<Boolean> = _authState
 
-    init {
-        checkAuthState()
-    }
-
-    private fun checkAuthState() {
-        Thread {
-            try {
-                account.get()
-                _authState.value = true
-            } catch (e: Exception) {
-                _authState.value = false
-            }
-        }.start()
+    suspend fun checkAuthState(): Boolean {
+        return try {
+            account.get()
+            _authState.value = true
+            true
+        } catch (e: Exception) {
+            _authState.value = false
+            false
+        }
     }
 
     companion object {
