@@ -3,8 +3,6 @@ name: Build APK
 on:
   push:
     branches: [main]
-    paths:
-      - 'web/**'
   workflow_dispatch:
 
 jobs:
@@ -16,23 +14,39 @@ jobs:
       - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
 
       - name: Install web dependencies
         run: |
           cd web
-          npm ci --legacy-peer-deps 2>/dev/null || npm install --legacy-peer-deps
+          npm install --legacy-peer-deps
 
       - name: Build frontend
         run: |
           cd web
           npx vite build
+
+      - name: Ensure cordova.variables.gradle exists
+        run: |
+          if [ ! -f web/android/capacitor-cordova-android-plugins/cordova.variables.gradle ]; then
+            mkdir -p web/android/capacitor-cordova-android-plugins/src/main
+            cat > web/android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'EOF'
+ext {
+  cdvMinSdkVersion = 23
+  cdvPluginPostBuildExtras = []
+  cordovaConfig = [:]
+}
+EOF
+            cat > web/android/capacitor-cordova-android-plugins/build.gradle << 'EOF'
+// Cordova plugins placeholder
+EOF
+          fi
 
       - name: Copy web assets to Capacitor
         run: |
@@ -47,28 +61,13 @@ jobs:
           cmake: 3.27.5
           build-tools: 34.0.0
 
-      - name: Ensure cordova.variables.gradle exists
-        run: |
-          if [ ! -d "web/android/capacitor-cordova-android-plugins" ]; then
-            mkdir -p web/android/capacitor-cordova-android-plugins/src/main
-            cat > web/android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'GRADLE'
-ext {
-  cdvMinSdkVersion = 23
-  cdvPluginPostBuildExtras = []
-  cordovaConfig = [:]
-}
-GRADLE
-            cat > web/android/capacitor-cordova-android-plugins/build.gradle << 'GRADLE'
-// Cordova plugins placeholder
-GRADLE
-          fi
-
       - name: Build debug APK
         run: |
           cd web/android
-          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace 2>&1
 
-      - name: Upload APK artifact
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: guide-trade-debug-apk
@@ -78,9 +77,9 @@ GRADLE
         if: success()
         run: |
           cd web/android
-          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
+          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace 2>&1
 
-      - name: Upload release APK artifact
+      - name: Upload release APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
