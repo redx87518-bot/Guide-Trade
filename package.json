@@ -1,0 +1,23 @@
+{
+  "name": "agent_665e0de7-19e9-493e-8ec5-9f55f65ddb1c",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redx87518-bot/Guide-Trade.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redx87518-bot/Guide-Trade/issues"
+  },
+  "homepage": "https://github.com/redx87518-bot/Guide-Trade#readme",
+  "dependencies": {
+    "appwrite": "^26.2.0"
+  }
+}
