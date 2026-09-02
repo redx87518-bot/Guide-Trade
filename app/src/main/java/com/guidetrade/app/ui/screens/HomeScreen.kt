@@ -301,7 +301,7 @@ fun HomeScreen(
                 text = if (isListening) "Stop Listening" else "Voice Input",
                 color = Color.White,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Mem
+                fontWeight = FontWeight.Medium
             )
         }
 
