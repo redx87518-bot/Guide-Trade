@@ -47,6 +47,22 @@ jobs:
           cmake: 3.27.5
           build-tools: 34.0.0
 
+      - name: Ensure cordova.variables.gradle exists
+        run: |
+          if [ ! -d "web/android/capacitor-cordova-android-plugins" ]; then
+            mkdir -p web/android/capacitor-cordova-android-plugins/src/main
+            cat > web/android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'GRADLE'
+ext {
+  cdvMinSdkVersion = 23
+  cdvPluginPostBuildExtras = []
+  cordovaConfig = [:]
+}
+GRADLE
+            cat > web/android/capacitor-cordova-android-plugins/build.gradle << 'GRADLE'
+// Cordova plugins placeholder
+GRADLE
+          fi
+
       - name: Build debug APK
         run: |
           cd web/android
