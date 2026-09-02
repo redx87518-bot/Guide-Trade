@@ -1,0 +1,70 @@
+name: Android Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - 'gradle.properties'
+      - '.github/workflows/android-build.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - 'gradle.properties'
+      - '.github/workflows/android-build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 36
+          ndk: 26.3.10984163
+          ndk-level: 26.3.10984163
+          build-tools: 36.0.0
+          emu-cli: true
+          ndk-parallel-upstream: false
+
+      - name: Configure Gradle
+        run: |
+          echo "org.gradle.jvmargs=-Xmx4096m -Dfile.encoding=UTF-8" >> $GITHUB_ENV
+          echo "org.gradle.caching=true" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Build release APK
+        run: ./gradlew assembleRelease --no-daemon -x lint -x test -x lintVitalRelease
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon -x lint -x test
+
+      - name: Extract debug APK
+        run: find app/build/outputs/apk/debug -name "*.apk" -exec cp {} ${{ env.OUTPUT_DIR }}/GuideTrade-debug.apk \;
+        env:
+          OUTPUT_DIR: ${{ github.workspace }}/artifacts
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GuideTrade-debug
+          path: ${{ env.OUTPUT_DIR }}/GuideTrade-debug.apk
+          if-no-files-found: error

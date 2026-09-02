@@ -1,17 +1,14 @@
 package com.guidetrade.app.data.appwrite
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import io.appwrite.Client
 import io.appwrite.services.Account
 import io.appwrite.services.Databases
 import io.appwrite.services.Storage
 import io.appwrite.services.Functions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.update
 
 object AppwriteConfig {
     const val ENDPOINT = "https://nyc.cloud.appwrite.io/v1"
@@ -20,7 +17,7 @@ object AppwriteConfig {
 }
 
 class AppwriteManager private constructor(context: Context) {
-    private val client: Client = Client(
+    val client: Client = Client(
         context,
         AppwriteConfig.ENDPOINT,
         AppwriteConfig.PROJECT_ID
@@ -35,14 +32,18 @@ class AppwriteManager private constructor(context: Context) {
     val authState: StateFlow<Boolean> = _authState
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
+        checkAuthState()
+    }
+
+    private fun checkAuthState() {
+        Thread {
             try {
-                val session = account.getSession("current")
-                _authState.value = session != null
+                account.get()
+                _authState.value = true
             } catch (e: Exception) {
                 _authState.value = false
             }
-        }
+        }.start()
     }
 
     companion object {

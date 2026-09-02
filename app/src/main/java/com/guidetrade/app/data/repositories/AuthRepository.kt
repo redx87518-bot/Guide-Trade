@@ -5,10 +5,7 @@ import com.guidetrade.app.data.appwrite.AppwriteManager
 import com.guidetrade.app.data.models.Profile
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.models.User
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class AuthRepository(private val appwrite: AppwriteManager) {
 
@@ -30,7 +27,7 @@ class AuthRepository(private val appwrite: AppwriteManager) {
 
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {
-            appwrite.account.createEmailPasswordSession(
+            appwrite.account.createEmailSession(
                 email = email,
                 password = password
             )
@@ -52,7 +49,11 @@ class AuthRepository(private val appwrite: AppwriteManager) {
     suspend fun getCurrentUserProfile(): Result<Profile?> {
         return try {
             val user = appwrite.account.get()
-            val prefs = appwrite.account.getPrefs<Map<String, Any>>()
+            val prefs = try {
+                appwrite.account.getPrefs<Map<String, Any>>()
+            } catch (e: Exception) {
+                null
+            }
             val profile = prefs?.let {
                 Profile(
                     userId = user.id,

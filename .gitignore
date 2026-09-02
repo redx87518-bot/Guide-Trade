@@ -1,11 +1,18 @@
-.env
-.env.local
+# Appwrite Function (Node.js)
 node_modules/
-.DS_Store
-dist/
-build/
 *.log
-npm-debug.log*
-.vercel
-.vscode
-.idea
+
+# Android
+.gradle/
+build/
+*.apk
+*.aab
+*.jks
+*.keystore
+local.properties
+
+# Environment
+.env
+
+# Temp files
+*.tmp

@@ -1,0 +1,42 @@
+# Gradle
+.gradle/
+build/
+
+# Build files
+*.apk
+*.aab
+*.ap_
+*.jar
+*.war
+*.class
+
+# Keystore
+*.jks
+*.keystore
+
+# Local configuration
+local.properties
+gradle.properties
+
+# Android specific
+proguard/
+**/build/
+!src/main/**/build/
+
+# File-based logs
+*.log
+
+# Android Studio
+/.idea
+/.meteor
+*.iml
+
+# External native build folder
+.externalNativeBuild
+
+# Google Services
+google-services.json
+
+# Sensitive files
+.env
+.env.*

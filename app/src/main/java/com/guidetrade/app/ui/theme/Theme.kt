@@ -1,54 +1,43 @@
 package com.guidetrade.app.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import androidx.compose.ui.unit.TextUnitType.LineHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.cos
-import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
@@ -72,8 +61,8 @@ private val LightSurfaceVariant = Color(0xFFF0F0F5)
 private val LightOnSurface = Color(0xFF1A1A1D)
 private val LightOnSurfaceVariant = Color(0xFF6B6B76)
 
-private val GradientStart = Color(0xFF6366F1)
-private val GradientEnd = Color(0xFF8B5CF6)
+val GradientStart = Color(0xFF6366F1)
+val GradientEnd = Color(0xFF8B5CF6)
 
 val GuideTradeColorScheme = lightColorScheme(
     primary = Purple40,
@@ -101,46 +90,23 @@ val GuideTradeDarkColorScheme = darkColorScheme(
     surfaceVariant = DarkSurfaceVariant,
 )
 
-val Typography = Typography(
-    displayLarge = androidx.compose.material3.Typography().displayLarge.copy(
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = FontWeight.SemiBold,
-        lineHeight = TextUnit(50.0, TextUnitType.Sp),
-    ),
-    titleLarge = androidx.compose.material3.Typography().titleLarge.copy(
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = FontWeight.SemiBold,
-        lineHeight = TextUnit(28.0, TextUnitType.Sp),
-    ),
-    bodyLarge = androidx.compose.material3.Typography().bodyLarge.copy(
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        lineHeight = TextUnit(22.0, TextUnitType.Sp),
-    ),
-    bodyMedium = androidx.compose.material3.Typography().bodyMedium.copy(
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = FontWeight.Normal,
-        lineHeight = TextUnit(20.0, TextUnitType.Sp),
-    ),
-)
+val Typography = androidx.compose.material3.Typography()
 
 @Composable
 fun GuideTradeTheme(
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
-    val activity = context as? ComponentActivity
-    val isDark = activity?.let {
-        it.startActivity?.let { true }
-    } ?: false
-
-    val colors = if (isDark) GuideTradeDarkColorScheme else GuideTradeColorScheme
+    val colors = GuideTradeColorScheme
 
     MaterialTheme(
         colorScheme = colors,
         typography = Typography,
         content = content
     )
+}
+
+enum class OrbState {
+    Idle, Listening, Thinking, Speaking, Error
 }
 
 @Composable
@@ -150,92 +116,42 @@ fun Orb(
     size: Float = 120f,
     onOrbClick: () -> Unit = {}
 ) {
-    val pulsePhase = remember { mutableStateOf(0f) }
-
-    LaunchedEffect(Unit) {
-        pulsePhase.value = 0f
-        while (true) {
-            pulsePhase.value = (pulsePhase.value + 0.02f) % 1f
-            kotlinx.coroutines.delay(16)
-        }
-    }
+    val infiniteTransition = rememberInfiniteTransition(label = "orb")
+    val pulse by infiniteTransition.animateFloat(
+        initialValue = 0.95f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulse"
+    )
 
     Box(
         modifier = modifier
-            .aspectRatio(1f)
+            .size((size * pulse).dp)
             .clip(CircleShape)
             .background(
-                brush = when (state) {
-                    OrbState.Idle, OrbState.Listening ->
-                        Brush.radialGradient(
-                            colors = listOf(
-                                GradientStart.copy(alpha = 0.8f),
-                                GradientEnd.copy(alpha = 0.5f)
-                            ),
-                            center = Offset(size / 2, size / 2),
-                            radius = size / 2
-                        )
-                    OrbState.Thinking ->
-                        Brush.radialGradient(
-                            colors = listOf(
-                                Color(0xFFFCD34D).copy(alpha = 0.8f),
-                                Color(0xFFF59E0B).copy(alpha = 0.5f)
-                        ),
-                            center = Offset(size / 2, size / 2),
-                            radius = size / 2
-                        )
-                    OrbState.Speaking ->
-                        Brush.radialGradient(
-                            colors = listOf(
-                                Color(0xFF34D399).copy(alpha = 0.8f),
-                                Color(0xFF05B386).copy(alpha = 0.5f)
-                            ),
-                            center = Offset(size / 2, size / 2),
-                            radius = size / 2
-                        )
-                    OrbState.Error ->
-                        Brush.radialGradient(
-                            colors = listOf(
-                                Color(0xFFF87171).copy(alpha = 0.8f),
-                                Color(0xFFEF4444).copy(alpha = 0.5f)
-                            ),
-                            center = Offset(size / 2, size / 2),
-                            radius = size / 2
-                        )
-                },
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        GradientStart.copy(alpha = 0.8f),
+                        GradientEnd.copy(alpha = 0.5f)
+                    )
+                )
             )
     ) {
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .aspectRatio(1f)
         ) {
-            val centerX = size / 2
-            val centerY = size / 2
-            val waveRadius = size * 0.4f + (size * 0.15f * pulsePhase.value)
-            val strokeWidth = 4f
-
             drawCircle(
                 color = Color.White.copy(alpha = 0.15f),
-                radius = waveRadius,
+                radius = size / 6,
                 style = Stroke(
-                    width = strokeWidth,
-                    cap = StrokeCap.Round
-                )
-            )
-
-            drawCircle(
-                color = Color.White.copy(alpha = 0.1f * (1 - pulsePhase.value)),
-                radius = waveRadius + 10,
-                style = Stroke(
-                    width = 2f,
+                    width = 4f,
                     cap = StrokeCap.Round
                 )
             )
         }
     }
-}
-
-enum class OrbState {
-    Idle, Listening, Thinking, Speaking, Error
 }

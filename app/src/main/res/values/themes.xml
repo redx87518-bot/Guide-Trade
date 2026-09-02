@@ -1,0 +1,17 @@
+<resources>
+    <style name="Theme.GuideTrade" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_40</item>
+        <item name="colorPrimaryVariant">@color/purple_70</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryContainer</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+    </style>
+
+    <style name="Theme.GuideTrade.Splash" parent="Theme.GuideTrade">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoConstraints">true</item>
+        <item name="android:statusBarColor">@color/purple_70</item>
+    </style>
+</resources>
