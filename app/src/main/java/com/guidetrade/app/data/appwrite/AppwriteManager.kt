@@ -16,11 +16,9 @@ object AppwriteConfig {
 }
 
 class AppwriteManager private constructor(context: Context) {
-    val client: Client = Client(
-        context,
-        AppwriteConfig.ENDPOINT,
-        AppwriteConfig.PROJECT_ID
-    )
+    val client: Client = Client(context)
+        .setEndpoint(AppwriteConfig.ENDPOINT)
+        .setProject(AppwriteConfig.PROJECT_ID)
 
     val account: Account = Account(client)
     val databases: Databases = Databases(client)

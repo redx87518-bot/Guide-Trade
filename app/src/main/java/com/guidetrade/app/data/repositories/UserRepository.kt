@@ -5,6 +5,7 @@ import com.guidetrade.app.data.appwrite.AppwriteConfig
 import com.guidetrade.app.data.appwrite.AppwriteManager
 import com.guidetrade.app.data.models.UserSettings
 import com.guidetrade.app.data.models.Watchlist
+import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +24,7 @@ class UserRepository(private val appwrite: AppwriteManager) {
             val document = appwrite.databases.createDocument(
                 databaseId = AppwriteConfig.DATABASE_ID,
                 collectionId = "watchlists",
-                documentId = "unique()",
+                 documentId = ID.unique(),
                 data = mapOf(
                     "userId" to userId,
                     "name" to name,

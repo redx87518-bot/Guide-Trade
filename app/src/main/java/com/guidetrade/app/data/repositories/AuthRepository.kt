@@ -3,6 +3,7 @@ package com.guidetrade.app.data.repositories
 import android.util.Log
 import com.guidetrade.app.data.appwrite.AppwriteManager
 import com.guidetrade.app.data.models.Profile
+import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.models.User
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ class AuthRepository(private val appwrite: AppwriteManager) {
     suspend fun createUser(email: String, password: String, name: String): Result<User<Map<String, Any>>> {
         return try {
             val user = appwrite.account.create(
-                userId = "unique()",
+                userId = ID.unique(),
                 email = email,
                 password = password,
                 name = name
@@ -28,8 +29,8 @@ class AuthRepository(private val appwrite: AppwriteManager) {
     suspend fun signIn(email: String, password: String): Result<Unit> {
         return try {
             appwrite.account.createSession(
-                email = email,
-                password = password
+                userId = email,
+                secret = password
             )
             Result.success(Unit)
         } catch (e: AppwriteException) {

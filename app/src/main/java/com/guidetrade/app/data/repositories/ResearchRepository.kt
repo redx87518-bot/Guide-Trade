@@ -4,19 +4,22 @@ import android.util.Log
 import com.guidetrade.app.data.appwrite.AppwriteConfig
 import com.guidetrade.app.data.appwrite.AppwriteManager
 import com.guidetrade.app.data.models.Evidence
+import com.guidetrade.app.data.models.Notification
+import com.guidetrade.app.data.models.NotificationType
 import com.guidetrade.app.data.models.ResearchResult
 import com.guidetrade.app.data.models.ResearchSession
 import com.guidetrade.app.data.models.ResearchStatus
 import com.guidetrade.app.data.models.SavedReport
 import com.guidetrade.app.data.models.UserSettings
 import com.guidetrade.app.data.models.Watchlist
-import com.guidetrade.app.data.models.Notification
-import com.guidetrade.app.data.models.NotificationType
+import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.models.DocumentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class ResearchRepository(private val appwrite: AppwriteManager) {
 
@@ -37,7 +40,7 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
             val document = appwrite.databases.createDocument(
                 databaseId = AppwriteConfig.DATABASE_ID,
                 collectionId = "research_sessions",
-                documentId = "unique()",
+                 documentId = ID.unique(),
                 data = mapOf(
                     "userId" to userId,
                     "query" to query,
@@ -73,7 +76,7 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
             appwrite.databases.createDocument(
                 databaseId = AppwriteConfig.DATABASE_ID,
                 collectionId = "research_results",
-                documentId = "unique()",
+                 documentId = ID.unique(),
                 data = mapOf(
                     "userId" to userId,
                     "sessionId" to sessionId,
@@ -143,9 +146,9 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
                     researchId = doc.data["researchId"] as? String ?: "",
                     title = doc.data["title"] as? String ?: "",
                     fileId = doc.data["fileId"] as? String ?: "",
-                    createdAt = Date((doc.data["\$createdAt"] as? Long) ?: System.currentTimeMillis())
-                 )
-             }.sortedByDescending { it.createdAt }
+                    createdAt = parseDate(doc.createdAt)
+                )
+            }.sortedByDescending { it.createdAt }
         } catch (e: AppwriteException) {
             Log.e("ResearchRepo", "Failed to fetch reports: ${e.message}")
         }
@@ -167,12 +170,21 @@ class ResearchRepository(private val appwrite: AppwriteManager) {
                     ),
                     title = doc.data["title"] as? String ?: "",
                     message = doc.data["message"] as? String ?: "",
-                     read = doc.data["read"] as? Boolean ?: false,
-                     createdAt = Date((doc.data["\$createdAt"] as? Long) ?: System.currentTimeMillis())
-                     )
-             }.sortedByDescending { it.createdAt }
+                    read = doc.data["read"] as? Boolean ?: false,
+                    createdAt = parseDate(doc.createdAt)
+                )
+            }.sortedByDescending { it.createdAt }
         } catch (e: AppwriteException) {
             Log.e("ResearchRepo", "Failed to fetch notifications: ${e.message}")
+        }
+    }
+
+    private fun parseDate(isoString: String): Date {
+        return try {
+            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+            format.parse(isoString) ?: Date()
+        } catch (e: Exception) {
+            Date()
         }
     }
 }
