@@ -1,0 +1,31 @@
+HTTP/1.1 201 Created
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Accept, Origin, Cookie, Set-Cookie, Content-Type, Content-Range, X-Appwrite-Project, X-Appwrite-Key, X-Appwrite-Dev-Key, X-Appwrite-Locale, X-Appwrite-Mode, X-Appwrite-JWT, X-Appwrite-Organization, X-Appwrite-Response-Format, X-Appwrite-Timeout, X-Appwrite-ID, X-Appwrite-Timestamp, X-Appwrite-Session, X-Appwrite-Platform, X-Appwrite-Impersonate-User-Id, X-Appwrite-Impersonate-User-Email, X-Appwrite-Impersonate-User-Phone, X-SDK-Version, X-SDK-Name, X-SDK-Language, X-SDK-Platform, X-SDK-GraphQL, X-SDK-Profile, Range, Cache-Control, Expires, Pragma, X-Fallback-Cookies, X-Requested-With, X-Forwarded-For, X-Forwarded-User-Agent, X-Appwrite-Console-Fingerprint, Authorization
+Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE
+Access-Control-Expose-Headers: X-Appwrite-Session, X-Fallback-Cookies
+Access-Control-Max-Age: 86400
+Cf-Cache-Status: DYNAMIC
+Cf-Ray: a34d024b4d55507e-ATL
+Connection: close
+Content-Type: application/json; charset=UTF-8
+Date: Wed, 02 Sep 2026 13:54:52 GMT
+Server: cloudflare
+Set-Cookie: a_session_console_legacy=eyJpZCI6IjZhOTgwYzAxY2Q4OGNjZmQ0NDZiIiwic2VjcmV0IjoiMDQzYzkzMWM0NjkxMzAwNjE4NTBiOWM1NmRkOGYxYTk1MjE3NWNkNDM0ODc1ZTI1ZGVhNDYyMzU2OWY4MzczOTY4ZDQ0Nzc2NmUyMmEzOTA5OTcyODc4ZWNlYThhZGIxZjk2MTEyOTEzNjc0YjZiNGQzMTFlYzEwNTgxYzM1ODAxMWQ1ODYyMjY1NDgyMDYxYmIyZjlhM2ZlODU4OGZkNzNjNjBlMDQwMjUwOGU4YTE5NTUwOGQ3MWNkNmExMWE1NDg5MWZkYWEzYzUwNWZjOGZhMGZhMzc5ODE5Y2ViNTczMWU4NDkzYzJiMGI3MDE1NDY1MmJhZmJjZjlhNmM1OSJ9; expires=Thu, 02-Sep-2027 13:54:52 GMT; Max-Age=31536000; path=/; domain=.appwrite.io; secure; HttpOnly
+Set-Cookie: a_session_console=eyJpZCI6IjZhOTgwYzAxY2Q4OGNjZmQ0NDZiIiwic2VjcmV0IjoiMDQzYzkzMWM0NjkxMzAwNjE4NTBiOWM1NmRkOGYxYTk1MjE3NWNkNDM0ODc1ZTI1ZGVhNDYyMzU2OWY4MzczOTY4ZDQ0Nzc2NmUyMmEzOTA5OTcyODc4ZWNlYThhZGIxZjk2MTEyOTEzNjc0YjZiNGQzMTFlYzEwNTgxYzM1ODAxMWQ1ODYyMjY1NDgyMDYxYmIyZjlhM2ZlODU4OGZkNzNjNjBlMDQwMjUwOGU4YTE5NTUwOGQ3MWNkNmExMWE1NDg5MWZkYWEzYzUwNWZjOGZhMGZhMzc5ODE5Y2ViNTczMWU4NDkzYzJiMGI3MDE1NDY1MmJhZmJjZjlhNmM1OSJ9; expires=Thu, 02-Sep-2027 13:54:52 GMT; Max-Age=31536000; path=/; domain=.appwrite.io; secure; HttpOnly; SameSite=None
+Strict-Transport-Security: max-age=10886400
+Vary: Accept-Encoding
+Via: 1.1 varnish
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Content-Type-Options: nosniff
+X-Debug-Fallback: false
+X-Debug-Fallback: true
+X-Debug-Speed: 1.225182056427
+X-Fallback-Cookies: {"a_session_console":"eyJpZCI6IjZhOTgwYzAxY2Q4OGNjZmQ0NDZiIiwic2VjcmV0IjoiMDQzYzkzMWM0NjkxMzAwNjE4NTBiOWM1NmRkOGYxYTk1MjE3NWNkNDM0ODc1ZTI1ZGVhNDYyMzU2OWY4MzczOTY4ZDQ0Nzc2NmUyMmEzOTA5OTcyODc4ZWNlYThhZGIxZjk2MTEyOTEzNjc0YjZiNGQzMTFlYzEwNTgxYzM1ODAxMWQ1ODYyMjY1NDgyMDYxYmIyZjlhM2ZlODU4OGZkNzNjNjBlMDQwMjUwOGU4YTE5NTUwOGQ3MWNkNmExMWE1NDg5MWZkYWEzYzUwNWZjOGZhMGZhMzc5ODE5Y2ViNTczMWU4NDkzYzJiMGI3MDE1NDY1MmJhZmJjZjlhNmM1OSJ9"}
+X-Ratelimit-Limit: 10
+X-Ratelimit-Remaining: 9
+X-Ratelimit-Reset: 1788357600
+X-Served-By: cache-pdk-kfty8610053-PDK
+X-Timer: S1788357291.768199,VS0,VE1335
+X-Utopia-Compression: true
+

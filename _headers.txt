@@ -1,0 +1,31 @@
+HTTP/1.1 401 Unauthorized
+Accept-Ranges: bytes
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Accept, Origin, Cookie, Set-Cookie, Content-Type, Content-Range, X-Appwrite-Project, X-Appwrite-Key, X-Appwrite-Dev-Key, X-Appwrite-Locale, X-Appwrite-Mode, X-Appwrite-JWT, X-Appwrite-Organization, X-Appwrite-Response-Format, X-Appwrite-Timeout, X-Appwrite-ID, X-Appwrite-Timestamp, X-Appwrite-Session, X-Appwrite-Platform, X-Appwrite-Impersonate-User-Id, X-Appwrite-Impersonate-User-Email, X-Appwrite-Impersonate-User-Phone, X-SDK-Version, X-SDK-Name, X-SDK-Language, X-SDK-Platform, X-SDK-GraphQL, X-SDK-Profile, Range, Cache-Control, Expires, Pragma, X-Fallback-Cookies, X-Requested-With, X-Forwarded-For, X-Forwarded-User-Agent, X-Appwrite-Console-Fingerprint, Authorization
+Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE
+Access-Control-Expose-Headers: X-Appwrite-Session, X-Fallback-Cookies
+Access-Control-Max-Age: 86400
+Cache-Control: no-cache, no-store, must-revalidate
+Cf-Cache-Status: DYNAMIC
+Cf-Ray: a34d018a0957507e-ATL
+Connection: close
+Content-Length: 134
+Content-Type: application/json; charset=UTF-8
+Date: Wed, 02 Sep 2026 13:54:19 GMT
+Expires: 0
+Pragma: no-cache
+Server: cloudflare
+Strict-Transport-Security: max-age=10886400
+Via: 1.1 varnish
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Content-Type-Options: nosniff
+X-Debug-Fallback: false
+X-Debug-Fallback: true
+X-Debug-Speed: 0.0093009471893311
+X-Ratelimit-Limit: 10
+X-Ratelimit-Remaining: 9
+X-Ratelimit-Reset: 1788357600
+X-Served-By: cache-pdk-kfty8610089-PDK
+X-Timer: S1788357260.892153,VS0,VE103
+
