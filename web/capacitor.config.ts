@@ -1,0 +1,12 @@
+import { defineConfig } from '@capacitor/cli';
+
+export default defineConfig({
+  appId: 'com.guidetrade.app',
+  appName: 'Guide Trade',
+  webDir: 'dist',
+  bundledWebRuntime: false,
+  server: {
+    url: 'http://10.0.2.2:3000',
+    cleartext: true,
+  },
+});

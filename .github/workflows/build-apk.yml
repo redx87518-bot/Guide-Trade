@@ -1,0 +1,78 @@
+#!/bin/bash
+# GitHub Actions workflow for building APK
+# Triggered on push to main branch
+
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          ndk: 26.1.10909125
+          cmake: 3.27.5
+          ndk: 26.1.10909125
+          ndk: 26.1.10909125
+
+      - name: Install frontend dependencies
+        run: |
+          cd web
+          npm install --legacy-peer-deps
+
+      - name: Build frontend
+        run: |
+          cd web
+          npm run build
+
+      - name: Sync Capacitor
+        run: |
+          cd web
+          npx cap sync android
+
+      - name: Build debug APK
+        run: |
+          cd web
+          npx cap doctor
+          cd android
+          ./gradlew assembleDebug -x check --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: guide-trade-debug-apk
+          path: web/android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Build release APK (optional)
+        run: |
+          cd web/android
+          ./gradlew assembleRelease -x check --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" || true
+
+      - name: Upload release APK artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guide-trade-release-apk
+          path: web/android/app/build/outputs/apk/release/app-release-unsigned.apk

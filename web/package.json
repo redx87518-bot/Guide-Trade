@@ -1,0 +1,33 @@
+{
+  "name": "guide-trade-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:android": "vite & npx cap copy android && npx cap open android",
+    "build:android": "vite build && npx cap copy android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "appwrite": "^26.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.4.0",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

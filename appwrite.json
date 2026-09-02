@@ -1,0 +1,31 @@
+{
+  "version": "1.7.5",
+  "endpoint": "https://nyc.cloud.appwrite.io/v1",
+  "project": "6a980c230037eb465e11",
+  "database": {
+    "id": "guide_trade",
+    "name": "Guide Trade"
+  },
+  "functions": [
+    {
+      "id": "guide-trade-api",
+      "name": "Guide Trade API",
+      "entrypoint": "src/main.js",
+      "runtime": "node-22",
+      "scope": "any",
+      "path": "/",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      "database": "guide_trade",
+      "execute": ["users()", "public()"],
+      "vcsRepository": "Guide-Trade",
+      "vcsOwner": "redx87518-bot",
+      "vcsBranch": "main",
+      "variables": [
+        { "key": "BEYALAN_API_KEY", "value": "" },
+        { "key": "PARALLEL_API_KEY", "value": "" },
+        { "key": "QUAN_API_KEY", "value": "" },
+        { "key": "EULERPOOL_API_KEY", "value": "" }
+      ]
+    }
+  ]
+}

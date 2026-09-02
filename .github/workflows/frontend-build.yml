@@ -1,0 +1,37 @@
+name: Frontend Build & Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: |
+          cd web
+          npm install --legacy-peer-deps
+
+      - name: Build
+        run: |
+          cd web
+          npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: guide-trade-web
+          path: web/dist/

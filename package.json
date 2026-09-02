@@ -1,23 +1,17 @@
 {
-  "name": "agent_665e0de7-19e9-493e-8ec5-9f55f65ddb1c",
+  "name": "guide-trade-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Appwrite Function for Guide Trade AI financial research",
+  "main": "src/main.js",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/redx87518-bot/Guide-Trade.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/redx87518-bot/Guide-Trade/issues"
-  },
-  "homepage": "https://github.com/redx87518-bot/Guide-Trade#readme",
   "dependencies": {
-    "appwrite": "^26.2.0"
-  }
+    "appwrite": "^26.2.0",
+    "node-fetch": "^3.3.2",
+    "pdfkit": "^0.15.0",
+    "formdata-polyfill": "^4.0.10"
+  },
+  "devDependencies": {}
 }

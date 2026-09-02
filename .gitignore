@@ -1,0 +1,11 @@
+.env
+.env.local
+node_modules/
+.DS_Store
+dist/
+build/
+*.log
+npm-debug.log*
+.vercel
+.vscode
+.idea
