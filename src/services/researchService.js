@@ -1,4 +1,4 @@
-import { createDocumentSafe, listDocumentsUserScoped, getDocument, updateDocument, deleteDocument } from './appwrite/database.js';
+import { createDocumentSafe, listDocumentsUserScoped, getDocument, updateDocument, deleteDocument } from '../appwrite/database.js';
 import { logger } from '../utils/logger.js';
 
 const COLLECTIONS = {

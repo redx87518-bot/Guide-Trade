@@ -1,4 +1,4 @@
-import PDFDocument from 'pdfkit/js/pdfkit.license.js';
+import PDFDocument from 'pdfkit';
 import { storage } from '../appwrite/storage.js';
 import { logger } from '../utils/logger.js';
 

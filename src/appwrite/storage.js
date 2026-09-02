@@ -7,7 +7,7 @@ const databaseId = process.env.APPWRITE_DATABASE_ID || 'guide_trade';
 const client = new Client()
   .setEndpoint(endpoint)
   .setProject(projectId)
-  .setKey(process.env.APPWRITE_API_KEY || '');
+  .setBearer(process.env.APPWRITE_API_KEY || '');
 
 const storage = new Storage(client);
 
