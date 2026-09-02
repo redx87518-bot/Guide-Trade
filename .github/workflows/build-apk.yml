@@ -1,4 +1,4 @@
-name: Build APK
+name: APK Builder
 
 on:
   push:
@@ -6,68 +6,58 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-apk:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Setup Node.js 22
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install web dependencies
+      - name: Install deps
         run: |
           cd web
           npm install --legacy-peer-deps
 
-      - name: Build frontend
+      - name: Build web
         run: |
           cd web
           npx vite build
 
-      - name: Ensure cordova.variables.gradle exists
+      - name: Ensure cordova.gradle
         run: |
           if [ ! -f web/android/capacitor-cordova-android-plugins/cordova.variables.gradle ]; then
             mkdir -p web/android/capacitor-cordova-android-plugins/src/main
-            cat > web/android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'EOF'
-ext {
-  cdvMinSdkVersion = 23
-  cdvPluginPostBuildExtras = []
-  cordovaConfig = [:]
-}
-EOF
-            cat > web/android/capacitor-cordova-android-plugins/build.gradle << 'EOF'
-// Cordova plugins placeholder
-EOF
+            printf 'ext {\n  cdvMinSdkVersion = 23\n  cdvPluginPostBuildExtras = []\n  cordovaConfig = [:] \n}\n' > web/android/capacitor-cordova-android-plugins/cordova.variables.gradle
+            printf '// Cordova plugins placeholder\n' > web/android/capacitor-cordova-android-plugins/build.gradle
           fi
 
-      - name: Copy web assets to Capacitor
+      - name: Cap copy
         run: |
           cd web
           npx cap copy android
 
-      - name: Setup Android SDK
+      - name: Setup Android
         uses: android-actions/setup-android@v3
         with:
           api-level: 34
-          ndk: 27.0.12179894
-          cmake: 3.27.5
           build-tools: 34.0.0
 
       - name: Build debug APK
         run: |
           cd web/android
           chmod +x ./gradlew
-          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace 2>&1
+          ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
 
-      - name: Upload debug APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: guide-trade-debug-apk
@@ -77,9 +67,9 @@ EOF
         if: success()
         run: |
           cd web/android
-          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace 2>&1
+          ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
 
-      - name: Upload release APK
+      - name: Upload release
         if: success()
         uses: actions/upload-artifact@v4
         with:
