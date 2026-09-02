@@ -1,0 +1,14 @@
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            cacheDynamicVersionsFor 0, 'seconds'
+            cacheChangingModulesFor 0, 'seconds'
+            cacheSnapshotsFor 0, 'seconds'
+        }
+    }
+    repositories {
+        mavenCentral()
+        google()
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
